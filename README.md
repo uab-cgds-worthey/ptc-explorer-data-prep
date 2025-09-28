@@ -10,10 +10,9 @@ This repository contains R scripts and data processing pipelines for preparing d
 ## Requirements
 
 - R (version 4.0 or higher)
-- Required R packages:
-  - tidyr
-  - dplyr
-  - Additional packages as specified in individual scripts
+- Required R packages (see installation instructions below):
+  - **CRAN packages**: tidyr, dplyr, readxl, enrichR, circlize
+  - **Bioconductor packages**: ComplexHeatmap, DESeq2
 - Input data files in the `data/` directory including:
   - Variant data (Excel format)
   - Metadata files
@@ -30,10 +29,31 @@ This repository contains R scripts and data processing pipelines for preparing d
 
 2. Open the project in RStudio or your preferred R environment
 
-3. Install required R packages by running the initialization script or install them manually:
+3. Install required R packages:
+
+   **Install CRAN packages:**
    ```r
-   install.packages(c("tidyr", "dplyr"))
-   # Additional packages will be installed as needed by individual scripts
+   # CRAN packages
+   install.packages(c(
+     "tidyr",
+     "dplyr", 
+     "readxl",
+     "enrichR",
+     "circlize"
+   ))
+   ```
+   
+   **Install Bioconductor packages:**
+   ```r
+   # Install BiocManager if not already installed
+   if (!requireNamespace("BiocManager", quietly = TRUE))
+     install.packages("BiocManager")
+   
+   # Bioconductor packages
+   BiocManager::install(c(
+     "ComplexHeatmap",
+     "DESeq2"
+   ))
    ```
 
 4. Ensure all required data files are present in the `data/` directory
@@ -58,7 +78,30 @@ The data processing pipeline consists of multiple R scripts that must be execute
 
 **Complete Pipeline Execution:**
 
-To run the entire data processing pipeline, execute the following commands in R from the project root directory:
+**Option 1: Using the Pipeline Function (Recommended)**
+
+Load and run the complete pipeline with a single function:
+
+```r
+# Load the pipeline function
+source("src/run_ptce_data_pipeline.R")
+
+# Run the standard pipeline (excludes optional oncoplot_alt_fun.R)
+run_ptce_data_pipeline()
+
+# Or run the full pipeline (includes all scripts)
+run_ptce_data_pipeline_full()
+
+# Run silently without verbose output
+run_ptce_data_pipeline(verbose = FALSE)
+
+# Continue execution even if errors occur
+run_ptce_data_pipeline(stop_on_error = FALSE)
+```
+
+**Option 2: Manual Script Execution**
+
+To run the entire data processing pipeline manually, execute the following commands in R from the project root directory:
 
 ```r
 # Complete data processing pipeline - run in sequence
@@ -105,6 +148,7 @@ ptc-explorer-data-prep
 │
 ├── src                            <- Source code for data processing
 │   ├── README.md                  <- Script execution order guide
+│   ├── run_ptce_data_pipeline.R   <- Pipeline execution functions
 │   ├── init.R                     <- Environment initialization
 │   ├── prepare_metadata.R         <- Metadata processing
 │   ├── prepare_variant_data.R     <- Variant data processing
