@@ -130,6 +130,9 @@ any(duplicated(genes_rna_fusion))
 
 
 genes_variants <- ptc_df_onco$Genes
+genes_variants <- strsplit(genes_variants, ",")
+# Unlist the resulting list of vectors into a single vector
+genes_variants <- unlist(genes_variants)
 length(genes_variants)
 
 

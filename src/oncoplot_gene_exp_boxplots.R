@@ -60,7 +60,7 @@ rg
 rg[1] = rg[1] - (rg[2] - rg[1])* 0.02
 rg[2] = rg[2] + (rg[2] - rg[1])* 0.02
 
-dev.off()
+#dev.off()
 
 anno_multiple_boxplot = function(index) {
   nr = length(index)
