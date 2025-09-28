@@ -1,17 +1,19 @@
 # DotEnv configuration
-.env
+*.env
 
 # mac
-.DS_Store
+*.DS_Store
 
 # exclude data from source control by default
 data/
 
 # exclude R project files
-.Rproj.user
+*.Rproj.user
 *.Rproj
-.Rhistory
-.RData
-.Ruserdata
+*.Rhistory
+*.RData
+*.Ruserdata
+*.renv
+
 
 out/

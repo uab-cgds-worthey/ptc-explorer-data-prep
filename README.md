@@ -1,62 +1,64 @@
 # PTC Explorer Data Preparation
 
 <!-- markdown-link-check-disable -->
-[![Perform linting -
-Markdown](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml/badge.svg)](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml)
-<!-- markdown-link-check-enable -->
+
+[![Perform linting - Markdown](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml/badge.svg)](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml) <!-- markdown-link-check-enable -->
 
 This repository contains R scripts and data processing pipelines for preparing datasets used in the PTC (Pediatric Thyroid Cancer) Explorer Shiny application. The project processes variant data, metadata, fusion data, differential gene expression results, and enrichment analyses to create a comprehensive dataset for pediatric thyroid cancer research exploration and visualization.
 
 ## Requirements
 
-- R (version 4.0 or higher)
-- Required R packages (see installation instructions below):
-  - **CRAN packages**: tidyr, dplyr, readxl, enrichR, circlize
-  - **Bioconductor packages**: ComplexHeatmap, DESeq2
-- Input data files in the `data/` directory including:
-  - Variant data (Excel format)
-  - Metadata files
-  - RNA fusion data (CSV format)
-  - Differential expression results
+-   R (version 4.0 or higher)
+-   Required R packages (see installation instructions below):
+    -   **CRAN packages**: tidyr, dplyr, readxl, enrichR, circlize
+    -   **Bioconductor packages**: ComplexHeatmap, DESeq2
+-   Input data files in the `data/` directory including:
+    -   Variant data (Excel format)
+    -   Metadata files
+    -   RNA fusion data (CSV format)
+    -   Differential expression results
 
 ## How to install
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/uab-cgds-worthey/ptc-explorer-data-prep.git
-   cd ptc-explorer-data-prep
-   ```
+1.  Clone this repository:
 
-2. Open the project in RStudio or your preferred R environment
+    ``` bash
+    git clone https://github.com/uab-cgds-worthey/ptc-explorer-data-prep.git
+    cd ptc-explorer-data-prep
+    ```
 
-3. Install required R packages:
+2.  Open the project in RStudio or your preferred R environment
 
-   **Install CRAN packages:**
-   ```r
-   # CRAN packages
-   install.packages(c(
-     "tidyr",
-     "dplyr", 
-     "readxl",
-     "enrichR",
-     "circlize"
-   ))
-   ```
-   
-   **Install Bioconductor packages:**
-   ```r
-   # Install BiocManager if not already installed
-   if (!requireNamespace("BiocManager", quietly = TRUE))
-     install.packages("BiocManager")
-   
-   # Bioconductor packages
-   BiocManager::install(c(
-     "ComplexHeatmap",
-     "DESeq2"
-   ))
-   ```
+3.  Install required R packages:
 
-4. Ensure all required data files are present in the `data/` directory
+    **Install CRAN packages:**
+
+    ``` r
+    # CRAN packages
+    install.packages(c(
+      "tidyr",
+      "dplyr", 
+      "readxl",
+      "enrichR",
+      "circlize"
+    ))
+    ```
+
+    **Install Bioconductor packages:**
+
+    ``` r
+    # Install BiocManager if not already installed
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+      install.packages("BiocManager")
+
+    # Bioconductor packages
+    BiocManager::install(c(
+      "ComplexHeatmap",
+      "DESeq2"
+    ))
+    ```
+
+4.  Ensure all required data files are present in the `data/` directory
 
 ## How to run
 
@@ -64,16 +66,16 @@ The data processing pipeline consists of multiple R scripts that must be execute
 
 **Script Execution Order:**
 
-0. **Initialize environment**: `init.R`
-1. **Prepare metadata**: `prepare_metadata.R`
-2. **Process variant data**: `prepare_variant_data.R`  
-3. **Prepare oncoplot data**: `oncoplot_prepare_data.R`
-4. **Alternative oncoplot function** (optional): `oncoplot_alt_fun.R`
-5. **Generate gene expression boxplots**: `oncoplot_gene_exp_boxplots.R`
-6. **Create main oncoplot**: `oncoplot_main.R`
-7. **Perform enrichment analysis**: `enrichment_analysis_enrichR.R`
-8. **Prepare fusion and DEG tables**: `prepare_fusion_deg_tbl.R`
-9. **Aggregate global gene data**: `global_gene_aggregation.R`
+0.  **Initialize environment**: `init.R`
+1.  **Prepare metadata**: `prepare_metadata.R`
+2.  **Process variant data**: `prepare_variant_data.R`\
+3.  **Prepare oncoplot data**: `oncoplot_prepare_data.R`
+4.  **Alternative oncoplot function** (optional): `oncoplot_alt_fun.R`
+5.  **Generate gene expression boxplots**: `oncoplot_gene_exp_boxplots.R`
+6.  **Create main oncoplot**: `oncoplot_main.R`
+7.  **Perform enrichment analysis**: `enrichment_analysis_enrichR.R`
+8.  **Prepare fusion and DEG tables**: `prepare_fusion_deg_tbl.R`
+9.  **Aggregate global gene data**: `global_gene_aggregation.R`
 10. **Package final data**: `pack_data_for_ptc_explorer.R`
 
 **Complete Pipeline Execution:**
@@ -82,15 +84,12 @@ The data processing pipeline consists of multiple R scripts that must be execute
 
 Load and run the complete pipeline with a single function:
 
-```r
+``` r
 # Load the pipeline function
 source("src/run_ptce_data_pipeline.R")
 
-# Run the standard pipeline (excludes optional oncoplot_alt_fun.R)
+# Run the complete data processing pipeline
 run_ptce_data_pipeline()
-
-# Or run the full pipeline (includes all scripts)
-run_ptce_data_pipeline_full()
 
 # Run silently without verbose output
 run_ptce_data_pipeline(verbose = FALSE)
@@ -103,7 +102,7 @@ run_ptce_data_pipeline(stop_on_error = FALSE)
 
 To run the entire data processing pipeline manually, execute the following commands in R from the project root directory:
 
-```r
+``` r
 # Complete data processing pipeline - run in sequence
 source("src/init.R")
 source("src/prepare_metadata.R")
@@ -126,7 +125,7 @@ The pipeline will create an output directory with timestamp (`out/MM-DD-YYYY/`) 
 
 The directory structure below shows the nature of files/directories used in this repo.
 
-```sh
+``` sh
 $ tree -a ptc-explorer-data-prep/
 ptc-explorer-data-prep
 ├── CHANGELOG.md                    <- Log of changes made
@@ -163,7 +162,6 @@ ptc-explorer-data-prep
 │
 └── out                            <- Generated output directory (created during execution)
     └── MM-DD-YYYY                 <- Timestamped results directory
-
 ```
 
 ## Contributing
@@ -172,4 +170,4 @@ We welcome contributions! [See the docs for guidelines](./CONTRIBUTING.md).
 
 ## Author
 
-Samuel Bharti [:email:](mailto:sbharti@uab.edu) | Graduate Research Assistant
+Samuel Bharti [:email:](mailto:sbharti@uab.edu) \| Graduate Research Assistant
