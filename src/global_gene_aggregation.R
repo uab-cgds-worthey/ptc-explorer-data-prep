@@ -99,25 +99,25 @@ sum(duplicated(genes_deg))
 rna_fusion_df <- fusion_tabl_latest
 rna_fusion_df$Participant_id <- as.factor(rna_fusion_df$Participant_id)
 
-gene_a <- unlist(strsplit(rna_fusion_df$Gene_Fusion[6], "--"))[2]
+gene_a <- unlist(strsplit(rna_fusion_df$Gene_Fusion[6], "::"))[2]
 gene_a
 
 rna_fusion_df$geneA <- sapply(rna_fusion_df$Gene_Fusion, function(x){
-  unlist(strsplit(x, "--"))[1]
+  unlist(strsplit(x, "::"))[1]
 })
 
 rna_fusion_df$geneB <- sapply(rna_fusion_df$Gene_Fusion, function(x){
-  unlist(strsplit(x, "--"))[2]
+  unlist(strsplit(x, "::"))[2]
 })
 
 
-write.csv(rna_fusion_df,
-          paste0(output_dir,"RNA_fusions_updated_",
+write.csv(rna_fusion_df, 
+          paste0(output_dir,
+                 "RNA_fusions_",
                  Sys.Date(),
-                 ".csv"),
-                 row.names = FALSE)
+                 ".csv"), row.names = FALSE)
 
-genes_rna_fusion <- unlist(strsplit(rna_fusion_df$Gene_Fusion, "--"))
+genes_rna_fusion <- unlist(strsplit(rna_fusion_df$Gene_Fusion, "::"))
 length(genes_rna_fusion)
 
 genes_rna_fusion <- genes_rna_fusion[!duplicated(genes_rna_fusion)]

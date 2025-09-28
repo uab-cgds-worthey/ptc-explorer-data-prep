@@ -95,7 +95,9 @@ ptc_ditto_only_scores <- ptc_df_onco_ditto[,c("Participant_id",
                                               "DITTO")]
 
 
-ptc_df_onco$DITTO <- sapply(1:nrow(ptc_df_onco), function(x){
+ptc_df_variants <- ptc_df_onco
+
+ptc_df_variants$DITTO <- sapply(1:nrow(ptc_df_onco), function(x){
   
   pariticipant_temp_id <- ptc_df_onco$Participant_id[x]
   variant_temp_id <- ptc_df_onco$Variant[x]
@@ -107,6 +109,15 @@ ptc_df_onco$DITTO <- sapply(1:nrow(ptc_df_onco), function(x){
   return(ditto_score)
   
 }, USE.NAMES = FALSE)
+
+
+colnames(ptc_df_variants)
+colnames(ptc_df_variants) <- c("Participant ID","Phenotype",
+                                 "Variant Type", "Gene", 
+                                 "Variant", "Germline Class",
+                                 "Allelic Balance", "Chromosome",
+                                 "Position", "DITTO Score")
+ptc_df_variants[,"DITTO Score"] <- round(ptc_df_variants[,"DITTO Score"], 4)
 
 rm(ptc_ditto_only_scores)
 rm(ptc_df_onco_ditto)

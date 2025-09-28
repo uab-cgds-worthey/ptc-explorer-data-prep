@@ -3,7 +3,7 @@
 
 ######## From metadata_direct.R; preprocess_var.R, gene_agg.R
 meta_data_app <- ptc_meta_summary
-variant_data_app <- ptc_df_onco
+variant_data_app <- ptc_df_variants
 rna_fusion_app <- rna_fusion_df
 meta_fact_cols_app <- meta_factor_columns
 meta_num_cols_app <- meta_numeric_columns
