@@ -37,7 +37,7 @@ app_data_pack <- list("meta" = meta_data_app,
                       "ptc_vs_ftc_er" = ptc_vs_ftc_enrichr,
                       "enrichr_dbs" = enrichr_db_app,
                       "all_genes" = all_genes_comb,
-                      "candidate_gens" = candidate_genes_latest,
+                      "candidate_genes" = candidate_genes_latest,
                       "version" = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z"))
 
 

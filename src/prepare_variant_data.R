@@ -99,13 +99,13 @@ ptc_df_variants <- ptc_df_onco
 
 ptc_df_variants$DITTO <- sapply(1:nrow(ptc_df_onco), function(x){
   
-  pariticipant_temp_id <- ptc_df_onco$Participant_id[x]
+  participant_temp_id <- ptc_df_onco$Participant_id[x]
   variant_temp_id <- ptc_df_onco$Variant[x]
   
-  ditto_score <- ptc_ditto_only_scores$DITTO[ptc_ditto_only_scores$Participant_id == pariticipant_temp_id & ptc_ditto_only_scores$Variant == variant_temp_id]
+  ditto_score <- ptc_ditto_only_scores$DITTO[ptc_ditto_only_scores$Participant_id == participant_temp_id & ptc_ditto_only_scores$Variant == variant_temp_id]
   
   ditto_score <- ifelse(is.null(ditto_score), NA, ditto_score)
-  print(paste(x,pariticipant_temp_id, variant_temp_id, ditto_score, sep = "_"))
+  print(paste(x,participant_temp_id, variant_temp_id, ditto_score, sep = "_"))
   return(ditto_score)
   
 }, USE.NAMES = FALSE)
