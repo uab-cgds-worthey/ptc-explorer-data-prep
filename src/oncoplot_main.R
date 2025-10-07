@@ -319,12 +319,12 @@ ptc_oncoprint <- oncoPrint(
   row_names_gp = gpar(fontsize = font_label_ann +
                         1, fontface = "bold"),
   right_annotation = c(
-    rowAnnotation(row_barplot = anno_oncoprint_barplot())#,
-    # rowAnnotation(
-    #   boxplot = anno_multiple_boxplot,
-    #   width = unit(4, "cm"),
-    #   show_annotation_name = FALSE
-    # )
+    rowAnnotation(row_barplot = anno_oncoprint_barplot()),
+    rowAnnotation(
+      boxplot = anno_multiple_boxplot,
+      width = unit(4, "cm"),
+      show_annotation_name = FALSE
+    )
   ),
   bottom_annotation = bottom_ann,
   top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
@@ -409,12 +409,12 @@ ptc_onco_obj_list <- list(
     row_names_gp = gpar(fontsize = font_label_ann +
                           1, fontface = "bold"),
     right_annotation = c(
-      rowAnnotation(row_barplot = anno_oncoprint_barplot())#,
-      # rowAnnotation(
-      #   boxplot = anno_multiple_boxplot,
-      #   width = unit(4, "cm"),
-      #   show_annotation_name = FALSE
-      # )
+      rowAnnotation(row_barplot = anno_oncoprint_barplot()),
+      rowAnnotation(
+        boxplot = anno_multiple_boxplot,
+        width = unit(4, "cm"),
+        show_annotation_name = FALSE
+      )
     ),
     bottom_annotation = bottom_ann,
     top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
