@@ -54,7 +54,9 @@ This repository contains R scripts and data processing pipelines for preparing d
     # Bioconductor packages
     BiocManager::install(c(
       "ComplexHeatmap",
-      "DESeq2"
+      "DESeq2",
+      "limma",
+      "forcats"
     ))
     ```
 

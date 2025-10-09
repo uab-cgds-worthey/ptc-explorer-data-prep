@@ -183,15 +183,23 @@ meta_col_bottom = list(
 font_label_ann <- 7.5
 
 ##### Top annotation ####
+ptc_meta_summary$Subtypes <- factor(ptc_meta_summary$Subtypes,
+                                    levels = c(
+                                      "FA",
+                                      "FTC",
+                                      "NIFTP",
+                                      "PTC",
+                                      "PTCplusTHY",
+                                      "THY"))
 top_df <- ptc_meta_summary[, "Subtypes"]
 
 top_ann <- HeatmapAnnotation(
   df = top_df,
   col = meta_col_top,
-  annotation_legend_param = list(
-    title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
-    labels_gp = gpar(fontsize = font_label_ann)
-  ),
+  # annotation_legend_param = list(
+  #   title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
+  #   labels_gp = gpar(fontsize = font_label_ann)
+  # ),
   annotation_name_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   annotation_name_side = "right",
   # annotation_height = unit(10, "mm"),
@@ -254,7 +262,7 @@ file_name <- paste0(output_dir,
 
 png(
   file_name,
-  width = 10.5,
+  width = 12,
   height = 24,
   units = "in",
   res = 400
@@ -311,7 +319,13 @@ ptc_oncoprint <- oncoPrint(
   column_order = colnames(ptc_df_onco_ready),
   column_split = factor(
     ptc_meta_summary$Subtypes,
-    c("THY", "PTC", "PTCplusTHY", "FTC", "NIFTP", "FA")
+    levels = c(
+      "FA",
+      "FTC",
+      "NIFTP",
+      "PTC",
+      "PTCplusTHY",
+      "THY")
   ),
   column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   column_names_gp = gpar(fontsize = font_label_ann +
@@ -401,7 +415,13 @@ ptc_onco_obj_list <- list(
     column_order = colnames(ptc_df_onco_ready),
     column_split = factor(
       ptc_meta_summary$Subtypes,
-      c("THY", "PTC", "PTCplusTHY", "FTC", "NIFTP", "FA")
+      levels = c(
+        "FA",
+        "FTC",
+        "NIFTP",
+        "PTC",
+        "PTCplusTHY",
+        "THY")
     ),
     column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
     column_names_gp = gpar(fontsize = font_label_ann +
