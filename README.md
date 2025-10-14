@@ -86,7 +86,7 @@ The data processing pipeline consists of multiple R scripts that must be execute
 
 **Complete Pipeline Execution:**
 
-**Option 1: Using the Pipeline Function (Recommended)**
+**Option 1: Using the Pipeline Function (Recommended):**
 
 Load and run the complete pipeline with a single function:
 
@@ -104,7 +104,7 @@ run_ptce_data_pipeline(verbose = FALSE)
 run_ptce_data_pipeline(stop_on_error = FALSE)
 ```
 
-**Option 2: Manual Script Execution**
+**Option 2: Manual Script Execution:**
 
 To run the entire data processing pipeline manually, execute the following commands in R from the project root
 directory:
