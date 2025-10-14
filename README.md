@@ -82,7 +82,7 @@ The data processing pipeline consists of multiple R scripts that must be execute
 8. **Perform enrichment analysis**: `enrichment_analysis_enrichR.R`
 9. **Prepare fusion and DEG tables**: `prepare_fusion_deg_tbl.R`
 10. **Aggregate global gene data**: `global_gene_aggregation.R`
-11. ackage final data**: `pack_data_for_ptc_explorer.R`
+11. **Package final data**: `pack_data_for_ptc_explorer.R`
 
 **Complete Pipeline Execution:**
 
