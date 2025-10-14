@@ -2,34 +2,39 @@
 
 <!-- markdown-link-check-disable -->
 
-[![Perform linting - Markdown](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml/badge.svg)](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml) <!-- markdown-link-check-enable -->
+[![Perform linting -
+Markdown](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml/badge.svg)](https://github.com/uab-cgds-worthey/ptc-explorer-data-prep/actions/workflows/linting.yml)
+<!-- markdown-link-check-enable -->
 
-This repository contains R scripts and data processing pipelines for preparing datasets used in the PTC (Pediatric Thyroid Cancer) Explorer Shiny application. The project processes variant data, metadata, fusion data, differential gene expression results, and enrichment analyses to create a comprehensive dataset for pediatric thyroid cancer research exploration and visualization.
+This repository contains R scripts and data processing pipelines for preparing datasets used in the PTC (Pediatric
+Thyroid Cancer) Explorer Shiny application. The project processes variant data, metadata, fusion data, differential gene
+expression results, and enrichment analyses to create a comprehensive dataset for pediatric thyroid cancer research
+exploration and visualization.
 
 ## Requirements
 
--   R (version 4.0 or higher)
--   Required R packages (see installation instructions below):
-    -   **CRAN packages**: tidyr, dplyr, readxl, enrichR, circlize
-    -   **Bioconductor packages**: ComplexHeatmap, DESeq2
--   Input data files in the `data/` directory including:
-    -   Variant data (Excel format)
-    -   Metadata files
-    -   RNA fusion data (CSV format)
-    -   Differential expression results
+- R (version 4.0 or higher)
+- Required R packages (see installation instructions below):
+  - **CRAN packages**: tidyr, dplyr, readxl, enrichR, circlize
+  - **Bioconductor packages**: ComplexHeatmap, DESeq2
+- Input data files in the `data/` directory including:
+  - Variant data (Excel format)
+  - Metadata files
+  - RNA fusion data (CSV format)
+  - Differential expression results
 
 ## How to install
 
-1.  Clone this repository:
+1. Clone this repository:
 
     ``` bash
     git clone https://github.com/uab-cgds-worthey/ptc-explorer-data-prep.git
     cd ptc-explorer-data-prep
     ```
 
-2.  Open the project in RStudio or your preferred R environment
+2. Open the project in RStudio or your preferred R environment
 
-3.  Install required R packages:
+3. Install required R packages:
 
     **Install CRAN packages:**
 
@@ -58,25 +63,26 @@ This repository contains R scripts and data processing pipelines for preparing d
     ))
     ```
 
-4.  Ensure all required data files are present in the `data/` directory
+4. Ensure all required data files are present in the `data/` directory
 
 ## How to run
 
-The data processing pipeline consists of multiple R scripts that must be executed in a specific order. Navigate to the `src/` directory and run the following scripts sequentially:
+The data processing pipeline consists of multiple R scripts that must be executed in a specific order. Navigate to the
+`src/` directory and run the following scripts sequentially:
 
 **Script Execution Order:**
 
-0.  **Initialize environment**: `init.R`
-1.  **Prepare metadata**: `prepare_metadata.R`
-2.  **Process variant data**: `prepare_variant_data.R`\
-3.  **Prepare oncoplot data**: `oncoplot_prepare_data.R`
-4.  **Alternative oncoplot function** (optional): `oncoplot_alt_fun.R`
-5.  **Generate gene expression boxplots**: `oncoplot_gene_exp_boxplots.R`
-6.  **Create main oncoplot**: `oncoplot_main.R`
-7.  **Perform enrichment analysis**: `enrichment_analysis_enrichR.R`
-8.  **Prepare fusion and DEG tables**: `prepare_fusion_deg_tbl.R`
-9.  **Aggregate global gene data**: `global_gene_aggregation.R`
-10. **Package final data**: `pack_data_for_ptc_explorer.R`
+1. **Initialize environment**: `init.R`
+2. **Prepare metadata**: `prepare_metadata.R`
+3. **Process variant data**: `prepare_variant_data.R`\
+4. **Prepare oncoplot data**: `oncoplot_prepare_data.R`
+5. **Alternative oncoplot function** (optional): `oncoplot_alt_fun.R`
+6. **Generate gene expression boxplots**: `oncoplot_gene_exp_boxplots.R`
+7. **Create main oncoplot**: `oncoplot_main.R`
+8. **Perform enrichment analysis**: `enrichment_analysis_enrichR.R`
+9. **Prepare fusion and DEG tables**: `prepare_fusion_deg_tbl.R`
+10. **Aggregate global gene data**: `global_gene_aggregation.R`
+11. ackage final data**: `pack_data_for_ptc_explorer.R`
 
 **Complete Pipeline Execution:**
 
@@ -100,7 +106,8 @@ run_ptce_data_pipeline(stop_on_error = FALSE)
 
 **Option 2: Manual Script Execution**
 
-To run the entire data processing pipeline manually, execute the following commands in R from the project root directory:
+To run the entire data processing pipeline manually, execute the following commands in R from the project root
+directory:
 
 ``` r
 # Complete data processing pipeline - run in sequence
@@ -119,7 +126,8 @@ source("src/pack_data_for_ptc_explorer.R")
 # Pipeline complete - check the out/ directory for results
 ```
 
-The pipeline will create an output directory with timestamp (`out/MM-DD-YYYY/`) containing processed results and packaged RDS files ready for ingestion by the PTC Explorer Shiny application.
+The pipeline will create an output directory with timestamp (`out/MM-DD-YYYY/`) containing processed results and
+packaged RDS files ready for ingestion by the PTC Explorer Shiny application.
 
 ## Repo's directory structure
 
