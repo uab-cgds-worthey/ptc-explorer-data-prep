@@ -70,7 +70,7 @@ exploration and visualization.
 ## How to run
 
 The data processing pipeline consists of multiple R scripts that must be executed in a specific order. Navigate to the
-`src/` directory and run the following scripts sequentially:
+`src/` directory and run the following scripts sequentially either manually or via automated pipeline as described further down:
 
 **Script Execution Order:**
 
