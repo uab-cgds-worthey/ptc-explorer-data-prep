@@ -51,7 +51,13 @@ alter_fun_custom = list(
       col = "blue"
     )),
   Tumor = function(x, y, w, h)
-    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = NA))
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = NA)),
+  Lesion = function(x, y, w, h)
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(
+      fill = NA,
+      lwd = 2,
+      col = "grey40"
+    ))
 )
 
 # test_alter_fun(alter_fun)
@@ -295,7 +301,8 @@ ptc_oncoprint <- oncoPrint(
       "SUB",
       "DEL",
       "Tumor",
-      "Normal"
+      "Normal",
+      "Lesion"
     ),
     # , "LB" These match the names of the mutations defined in alter_fun
     labels = c(
@@ -308,7 +315,8 @@ ptc_oncoprint <- oncoPrint(
       "Substitution",
       "Deletion",
       "Tumor",
-      "Normal"
+      "Normal",
+      "Lesion"
     ),
     # , "Likely Benign"
     title_gp = gpar(fontsize = font_label_ann +
@@ -346,9 +354,9 @@ ptc_oncoprint <- oncoPrint(
 
 ##### Create Oncoprint Legend for metadata ####
 lgd = Legend(
-  labels = c("Tumor", "Normal"),
+  labels = c("Tumor", "Normal", "Lesion"),
   title = "Phenotype",
-  legend_gp = gpar(fill = c("grey40", "grey90")),
+  legend_gp = gpar(fill = c("grey40", "grey90", "white"), col = c(NA, NA, "grey40")),
   title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
   labels_gp = gpar(fontsize = font_label_ann)
 )
@@ -391,7 +399,8 @@ ptc_onco_obj_list <- list(
         "SUB",
         "DEL",
         "Tumor",
-        "Normal"
+        "Normal",
+        "Lesion"
       ),
       # , "LB" These match the names of the mutations defined in alter_fun
       labels = c(
@@ -404,7 +413,8 @@ ptc_onco_obj_list <- list(
         "Substitution",
         "Deletion",
         "Tumor",
-        "Normal"
+        "Normal",
+        "Lesion"
       ),
       # , "Likely Benign"
       title_gp = gpar(fontsize = font_label_ann +
