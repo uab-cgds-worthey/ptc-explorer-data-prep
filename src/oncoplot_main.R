@@ -56,7 +56,7 @@ alter_fun_custom = list(
     grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(
       fill = NA,
       lwd = 2,
-      col = "grey40"
+      col = "#C96A1B"
     ))
 )
 
