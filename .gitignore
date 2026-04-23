@@ -24,3 +24,4 @@ out/*
 .Rproj.user
 Rplots.pdf
 src/prepare_variant_data_dev.R
+/archive
