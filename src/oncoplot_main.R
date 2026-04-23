@@ -355,7 +355,7 @@ ptc_oncoprint <- oncoPrint(
 ##### Create Oncoprint Legend for metadata ####
 lgd = Legend(
   labels = c("Tumor", "Normal"),
-  title = "Gene Expression (Boxplot, log2 normalized counts + 1)",
+  title = "Gene Expression\n(Boxplot, log2\nnormalized counts + 1)",
   legend_gp = gpar(fill = c("grey40", "grey90")),
   title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
   labels_gp = gpar(fontsize = font_label_ann)
