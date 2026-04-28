@@ -261,7 +261,13 @@ bottom_df$Type_of_Thyroid_Surgery <- gsub(
 )
 
 ## Build display-only legend labels for bottom annotations (preserve metadata keys)
-per_ann_bottom <- lapply(meta_col_bottom, function(v) list(labels = clean_labels(names(v))))
+## For each bottom annotation, provide explicit legend `at` (keys) and cleaned `labels` (display-only)
+per_ann_bottom <- lapply(meta_col_bottom, function(v) {
+  list(
+    at = names(v),
+    labels = clean_labels(names(v))
+  )
+})
 names(per_ann_bottom) <- names(meta_col_bottom)
 default_legend_params_bottom <- list(
   direction = "horizontal",
