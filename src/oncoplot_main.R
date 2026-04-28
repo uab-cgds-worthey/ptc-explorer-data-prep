@@ -221,22 +221,19 @@ top_df <- data.frame(
   stringsAsFactors = FALSE
 )
 
+# helper to create display-only labels (do not alter underlying metadata)
+clean_labels <- function(x) gsub("_", " ", x)
+
 top_ann <- HeatmapAnnotation(
   df = top_df,
   col = meta_col_top,
-  # annotation_legend_param = list(
-  #   title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
-  #   labels_gp = gpar(fontsize = font_label_ann)
-  # ),
   annotation_name_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   annotation_name_side = "right",
-  # annotation_height = unit(10, "mm"),
   annotation_height = unit(0.15, "in"),
   show_annotation_name = TRUE,
   show_legend = FALSE,
-  #gp = gpar(size = 15),
   simple_anno_size_adjust = TRUE,
-  annotation_label = colnames(top_df)
+  annotation_label = clean_labels(colnames(top_df))
 )
 
 ##### Test Top Annotation #####
@@ -263,31 +260,30 @@ bottom_df$Type_of_Thyroid_Surgery <- gsub(
   fixed = TRUE
 )
 
+## Build display-only legend labels for bottom annotations (preserve metadata keys)
+per_ann_bottom <- lapply(meta_col_bottom, function(v) list(labels = clean_labels(names(v))))
+names(per_ann_bottom) <- names(meta_col_bottom)
+default_legend_params_bottom <- list(
+  direction = "horizontal",
+  title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
+  labels_gp = gpar(fontsize = font_label_ann),
+  legend_width = unit(2, "cm"),
+  word_wrap = TRUE
+)
+annotation_legend_param_bottom <- c(default_legend_params_bottom, per_ann_bottom)
+
 bottom_ann <- HeatmapAnnotation(
   df = bottom_df,
   col = meta_col_bottom,
-  annotation_legend_param = list(
-    direction = "horizontal",
-    title_gp = gpar(fontsize = font_label_ann +
-                      1, fontface = "bold"),
-    labels_gp = gpar(fontsize = font_label_ann),
-    legend_width  = unit(2, "cm"),
-    word_wrap = TRUE
-  ),
-  annotation_name_gp = gpar(fontsize = font_label_ann +
-                              1, fontface = "bold"),
-  #annotation_label = gpar(fontsize = 8),
+  annotation_legend_param = annotation_legend_param_bottom,
+  annotation_name_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
   annotation_name_side = "right",
-  #height = unit(2, "mm"),
   annotation_height = unit(3.5, "in"),
-  # annotation_height = unit(0.1, "mm"),
   show_annotation_name = TRUE,
   show_legend = TRUE,
-  #gp = gpar(size = 15),
-  # gap = unit(1, "points"),
   na_col = "black",
   simple_anno_size_adjust = TRUE,
-  annotation_label = colnames(bottom_df)
+  annotation_label = clean_labels(colnames(bottom_df))
 )
 
 ##### Test Bottom Annotation #####
