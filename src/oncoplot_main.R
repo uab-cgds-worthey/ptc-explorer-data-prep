@@ -91,7 +91,7 @@ meta_col_bottom = list(
   Pathology_Subtype = c(
     "NA" = "black",
     "PTC conventional variant" = "#9E9AC8",
-    "PTC conventional variant and papillary microcarcinoma" = "#807DBA",
+    "PTC conventional variant\nand papillary microcarcinoma" = "#807DBA",
     "PTC diffuse sclerosing variant" = "#6A51A3",
     "PTC follicular variant" = "#3F007D",
     "PTC oncocytic variant" =  "#54278F",
@@ -147,7 +147,7 @@ meta_col_bottom = list(
     "NA" = "black",
     "Subtotal thyroidectomy" =  "#62A881",
     "Hemi thyroidectomy" = "#CAE2D5" ,
-    "Hemi thyroidectomy and Isthmusectomy" = "#96C4AB",
+    "Hemi thyroidectomy\nand Isthmusectomy" = "#96C4AB",
     "Total thyroidectomy" = "#2E8B57"
   ),
   Primary_Tumor = c(
@@ -250,6 +250,18 @@ bottom_df <- bottom_df[colnames(ptc_df_onco_ready), , drop = FALSE]
 rownames(bottom_df) <- colnames(ptc_df_onco_ready)
 bottom_df$Pathology_Subtype <- gsub("_", " ", bottom_df$Pathology_Subtype)
 bottom_df$Type_of_Thyroid_Surgery <- gsub("_", " ", bottom_df$Type_of_Thyroid_Surgery)
+bottom_df$Pathology_Subtype <- gsub(
+  "PTC conventional variant and papillary microcarcinoma",
+  "PTC conventional variant\nand papillary microcarcinoma",
+  bottom_df$Pathology_Subtype,
+  fixed = TRUE
+)
+bottom_df$Type_of_Thyroid_Surgery <- gsub(
+  "Hemi thyroidectomy and Isthmusectomy",
+  "Hemi thyroidectomy\nand Isthmusectomy",
+  bottom_df$Type_of_Thyroid_Surgery,
+  fixed = TRUE
+)
 
 bottom_ann <- HeatmapAnnotation(
   df = bottom_df,
@@ -474,8 +486,6 @@ ptc_onco_obj_list <- list(
   ),
   lgd = lgd
 )
-
-
 
 ####### Save Oncoplot Object #######
 saveRDS(ptc_onco_obj_list,
