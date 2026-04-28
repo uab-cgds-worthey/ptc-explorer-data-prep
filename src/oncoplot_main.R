@@ -208,12 +208,12 @@ rownames(ptc_meta_summary) <- colnames(ptc_df_onco_ready)
 ##### Top annotation ####
 ptc_meta_summary$Subtypes <- factor(ptc_meta_summary$Subtypes,
                                     levels = c(
-                                      "FA",
-                                      "FTC",
-                                      "NIFTP",
+                                      "THY",
                                       "PTC",
                                       "PTCplusTHY",
-                                      "THY"))
+                                      "FTC",
+                                      "NIFTP",
+                                      "FA"))
 top_df <- ptc_meta_summary[, "Subtypes"]
 top_df <- data.frame(
   Subtypes = ptc_meta_summary$Subtypes,
@@ -351,12 +351,12 @@ ptc_oncoprint <- oncoPrint(
   column_split = factor(
     ptc_meta_summary$Subtypes,
     levels = c(
-      "FA",
-      "FTC",
-      "NIFTP",
+      "THY",
       "PTC",
       "PTCplusTHY",
-      "THY")
+      "FTC",
+      "NIFTP",
+      "FA")
   ),
   column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   column_names_gp = gpar(fontsize = font_label_ann +
@@ -449,12 +449,12 @@ ptc_onco_obj_list <- list(
     column_split = factor(
       ptc_meta_summary$Subtypes,
       levels = c(
-        "FA",
-        "FTC",
-        "NIFTP",
+        "THY",
         "PTC",
         "PTCplusTHY",
-        "THY")
+        "FTC",
+        "NIFTP",
+        "FA")
     ),
     column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
     column_names_gp = gpar(fontsize = font_label_ann +
