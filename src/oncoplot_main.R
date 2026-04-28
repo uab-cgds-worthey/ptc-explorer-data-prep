@@ -489,7 +489,8 @@ ptc_onco_obj_list <- list(
     bottom_annotation = bottom_ann,
     top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
   ),
-  lgd = lgd
+  lgd = lgd,
+  version = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")
 )
 
 ####### Save Oncoplot Object #######
