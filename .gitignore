@@ -25,3 +25,4 @@ out/*
 Rplots.pdf
 src/prepare_variant_data_dev.R
 /archive
+.positai
