@@ -347,7 +347,7 @@ ptc_oncoprint <- oncoPrint(
     labels_gp = gpar(fontsize = font_label_ann) # , "#C9A448"
   ),
   #alter_fun_is_vectorized = FALSE,
-  column_order = colnames(ptc_df_onco_ready),
+  column_order = rownames(ptc_meta_summary)[order(ptc_meta_summary$Subtypes)],
   column_split = factor(
     ptc_meta_summary$Subtypes,
     levels = c(
@@ -445,7 +445,7 @@ ptc_onco_obj_list <- list(
       labels_gp = gpar(fontsize = font_label_ann) # , "#C9A448"
     ),
     alter_fun_is_vectorized = FALSE,
-    column_order = colnames(ptc_df_onco_ready),
+    column_order = rownames(ptc_meta_summary)[order(ptc_meta_summary$Subtypes)],
     column_split = factor(
       ptc_meta_summary$Subtypes,
       levels = c(
