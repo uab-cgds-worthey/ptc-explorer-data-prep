@@ -63,4 +63,12 @@ ptc_df_onco_ready = as.matrix(ptc_df_onco_ready)
 rownames(ptc_df_onco_ready) = ptc_df_onco_ready[, 1]
 ptc_df_onco_ready = ptc_df_onco_ready[, -1]
 
+gene_order <- unique(ptc_df_rmVUS_alt$Genes[order(ptc_df_rmVUS_alt$Case_id)])
+ptc_df_onco_ready <- ptc_df_onco_ready[
+  c(gene_order[gene_order %in% rownames(ptc_df_onco_ready)],
+    setdiff(rownames(ptc_df_onco_ready), gene_order)),
+  ,
+  drop = FALSE
+]
+
 dim(ptc_df_onco_ready)
