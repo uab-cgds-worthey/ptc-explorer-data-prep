@@ -188,6 +188,23 @@ meta_col_bottom = list(
 #### Font label size #####
 font_label_ann <- 7.5
 
+colnames(ptc_df_onco_ready) <- gsub("P_", "", colnames(ptc_df_onco_ready))
+
+ptc_meta_summary <- as.data.frame(ptc_meta_summary)
+rownames(ptc_meta_summary) <- as.character(ptc_meta_summary$Participant_id)
+
+meta_idx <- match(colnames(ptc_df_onco_ready), rownames(ptc_meta_summary))
+if (any(is.na(meta_idx))) {
+  missing_meta_ids <- colnames(ptc_df_onco_ready)[is.na(meta_idx)]
+  stop(
+    "Missing metadata rows for participant IDs: ",
+    paste(missing_meta_ids, collapse = ", ")
+  )
+}
+
+ptc_meta_summary <- ptc_meta_summary[meta_idx, , drop = FALSE]
+rownames(ptc_meta_summary) <- colnames(ptc_df_onco_ready)
+
 ##### Top annotation ####
 ptc_meta_summary$Subtypes <- factor(ptc_meta_summary$Subtypes,
                                     levels = c(
@@ -198,6 +215,11 @@ ptc_meta_summary$Subtypes <- factor(ptc_meta_summary$Subtypes,
                                       "PTCplusTHY",
                                       "THY"))
 top_df <- ptc_meta_summary[, "Subtypes"]
+top_df <- data.frame(
+  Subtypes = ptc_meta_summary$Subtypes,
+  row.names = colnames(ptc_df_onco_ready),
+  stringsAsFactors = FALSE
+)
 
 top_ann <- HeatmapAnnotation(
   df = top_df,
@@ -224,6 +246,8 @@ top_ann <- HeatmapAnnotation(
 
 ##### Bottom Annotation #####
 bottom_df <- as.data.frame(ptc_meta_summary[, -c(1, 4)])
+bottom_df <- bottom_df[colnames(ptc_df_onco_ready), , drop = FALSE]
+rownames(bottom_df) <- colnames(ptc_df_onco_ready)
 bottom_df$Pathology_Subtype <- gsub("_", " ", bottom_df$Pathology_Subtype)
 bottom_df$Type_of_Thyroid_Surgery <- gsub("_", " ", bottom_df$Type_of_Thyroid_Surgery)
 
@@ -258,7 +282,6 @@ bottom_ann <- HeatmapAnnotation(
 #draw(bottom_ann)
 #dev.off()
 
-colnames(ptc_df_onco_ready) <- gsub("P_", "", colnames(ptc_df_onco_ready))
 ######### Start png media. Choose from pdf, png, svg, etc. #####
 file_name <- paste0(output_dir,
                     "oncoplot",
