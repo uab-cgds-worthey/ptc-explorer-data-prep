@@ -262,13 +262,6 @@ bottom_df$Type_of_Thyroid_Surgery <- gsub(
 
 ## Build display-only legend labels for bottom annotations (preserve metadata keys)
 ## For each bottom annotation, provide explicit legend `at` (keys) and cleaned `labels` (display-only)
-per_ann_bottom <- lapply(meta_col_bottom, function(v) {
-  list(
-    at = names(v),
-    labels = clean_labels(names(v))
-  )
-})
-names(per_ann_bottom) <- names(meta_col_bottom)
 default_legend_params_bottom <- list(
   direction = "horizontal",
   title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
@@ -276,7 +269,17 @@ default_legend_params_bottom <- list(
   legend_width = unit(2, "cm"),
   word_wrap = TRUE
 )
-annotation_legend_param_bottom <- c(default_legend_params_bottom, per_ann_bottom)
+
+## For each bottom annotation build a full legend param list that keeps mapping keys (`at`)
+## but displays cleaned labels (no underscores). This ensures legend *values* show nicely.
+per_ann_bottom <- lapply(meta_col_bottom, function(v) {
+  params <- default_legend_params_bottom
+  params$at <- names(v)
+  params$labels <- clean_labels(names(v))
+  params
+})
+names(per_ann_bottom) <- names(meta_col_bottom)
+annotation_legend_param_bottom <- per_ann_bottom
 
 bottom_ann <- HeatmapAnnotation(
   df = bottom_df,
