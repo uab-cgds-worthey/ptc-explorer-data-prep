@@ -26,7 +26,7 @@ ptc_df_meta_direct <- ptc_df_tableS2 %>%
     Nodule1_FNA_Result = Nodule1_FNA_Result,
     Autoimmune_Thyroiditis = Autoimmune_Thyroiditis,
     History_of_Radiation_to_Neck = History_of_Radiation_to_Neck,
-    History_of_Previous_Cancer = Histor_of_Previous_Cancer,
+    History_of_Previous_Cancer = History_of_Previous_Cancer,
     Received_RAI = `Did_Patient_Receive_RAI?`,
     Additional_Surgery = Additional_Surgery,
     Batch = Batch_number,
