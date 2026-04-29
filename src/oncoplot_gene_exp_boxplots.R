@@ -74,7 +74,7 @@ anno_multiple_boxplot = function(index) {
                  gp = gpar(fill = "grey90"), direction = "horizontal",
                  pch = 16)
   }
-  grid.xaxis(main = FALSE, gp = gpar(fontsize = font_label_ann))
+  grid.xaxis(main = TRUE, gp = gpar(fontsize = font_label_ann))
   popViewport()
 }
 

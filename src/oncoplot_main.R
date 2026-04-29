@@ -11,7 +11,7 @@ library(RColorBrewer)
 
 alter_fun_custom = list(
   background = function(x, y, w, h)
-    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#CCCCCC", col = NA)),
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#D9D9D9", col = NA)),
   # red rectangles
   P = function(x, y, w, h)
     grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#CD1076", col = NA)),
@@ -51,7 +51,13 @@ alter_fun_custom = list(
       col = "blue"
     )),
   Tumor = function(x, y, w, h)
-    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = NA))
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = NA)),
+  Lesion = function(x, y, w, h)
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(
+      fill = NA,
+      lwd = 2,
+      col = "#C96A1B"
+    ))
 )
 
 # test_alter_fun(alter_fun)
@@ -85,7 +91,7 @@ meta_col_bottom = list(
   Pathology_Subtype = c(
     "NA" = "black",
     "PTC conventional variant" = "#9E9AC8",
-    "PTC conventional variant and papillary microcarcinoma" = "#807DBA",
+    "PTC conventional variant\nand papillary microcarcinoma" = "#807DBA",
     "PTC diffuse sclerosing variant" = "#6A51A3",
     "PTC follicular variant" = "#3F007D",
     "PTC oncocytic variant" =  "#54278F",
@@ -141,7 +147,7 @@ meta_col_bottom = list(
     "NA" = "black",
     "Subtotal thyroidectomy" =  "#62A881",
     "Hemi thyroidectomy" = "#CAE2D5" ,
-    "Hemi thyroidectomy and Isthmusectomy" = "#96C4AB",
+    "Hemi thyroidectomy\nand Isthmusectomy" = "#96C4AB",
     "Total thyroidectomy" = "#2E8B57"
   ),
   Primary_Tumor = c(
@@ -182,33 +188,52 @@ meta_col_bottom = list(
 #### Font label size #####
 font_label_ann <- 7.5
 
+colnames(ptc_df_onco_ready) <- gsub("P_", "", colnames(ptc_df_onco_ready))
+
+ptc_meta_summary <- as.data.frame(ptc_meta_summary)
+rownames(ptc_meta_summary) <- as.character(ptc_meta_summary$Participant_id)
+
+meta_idx <- match(colnames(ptc_df_onco_ready), rownames(ptc_meta_summary))
+if (any(is.na(meta_idx))) {
+  missing_meta_ids <- colnames(ptc_df_onco_ready)[is.na(meta_idx)]
+  stop(
+    "Missing metadata rows for participant IDs: ",
+    paste(missing_meta_ids, collapse = ", ")
+  )
+}
+
+ptc_meta_summary <- ptc_meta_summary[meta_idx, , drop = FALSE]
+rownames(ptc_meta_summary) <- colnames(ptc_df_onco_ready)
+
 ##### Top annotation ####
 ptc_meta_summary$Subtypes <- factor(ptc_meta_summary$Subtypes,
                                     levels = c(
-                                      "FA",
-                                      "FTC",
-                                      "NIFTP",
+                                      "THY",
                                       "PTC",
                                       "PTCplusTHY",
-                                      "THY"))
+                                      "FTC",
+                                      "NIFTP",
+                                      "FA"))
 top_df <- ptc_meta_summary[, "Subtypes"]
+top_df <- data.frame(
+  Subtypes = ptc_meta_summary$Subtypes,
+  row.names = colnames(ptc_df_onco_ready),
+  stringsAsFactors = FALSE
+)
+
+# helper to create display-only labels (do not alter underlying metadata)
+clean_labels <- function(x) gsub("_", " ", x)
 
 top_ann <- HeatmapAnnotation(
   df = top_df,
   col = meta_col_top,
-  # annotation_legend_param = list(
-  #   title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
-  #   labels_gp = gpar(fontsize = font_label_ann)
-  # ),
   annotation_name_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   annotation_name_side = "right",
-  # annotation_height = unit(10, "mm"),
   annotation_height = unit(0.15, "in"),
   show_annotation_name = TRUE,
   show_legend = FALSE,
-  #gp = gpar(size = 15),
   simple_anno_size_adjust = TRUE,
-  annotation_label = colnames(top_df)
+  annotation_label = clean_labels(colnames(top_df))
 )
 
 ##### Test Top Annotation #####
@@ -218,41 +243,78 @@ top_ann <- HeatmapAnnotation(
 
 ##### Bottom Annotation #####
 bottom_df <- as.data.frame(ptc_meta_summary[, -c(1, 4)])
+bottom_df <- bottom_df[colnames(ptc_df_onco_ready), , drop = FALSE]
+rownames(bottom_df) <- colnames(ptc_df_onco_ready)
 bottom_df$Pathology_Subtype <- gsub("_", " ", bottom_df$Pathology_Subtype)
 bottom_df$Type_of_Thyroid_Surgery <- gsub("_", " ", bottom_df$Type_of_Thyroid_Surgery)
+bottom_df$Pathology_Subtype <- gsub(
+  "PTC conventional variant and papillary microcarcinoma",
+  "PTC conventional variant\nand papillary microcarcinoma",
+  bottom_df$Pathology_Subtype,
+  fixed = TRUE
+)
+bottom_df$Type_of_Thyroid_Surgery <- gsub(
+  "Hemi thyroidectomy and Isthmusectomy",
+  "Hemi thyroidectomy\nand Isthmusectomy",
+  bottom_df$Type_of_Thyroid_Surgery,
+  fixed = TRUE
+)
+
+## Build display-only legend labels for bottom annotations (preserve metadata keys)
+## For each bottom annotation, provide explicit legend `at` (keys) and cleaned `labels` (display-only)
+default_legend_params_bottom <- list(
+  direction = "horizontal",
+  title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
+  labels_gp = gpar(fontsize = font_label_ann),
+  legend_width = unit(2, "cm"),
+  word_wrap = TRUE
+)
+
+## For each bottom annotation build a full legend param list that keeps mapping keys (`at`)
+## but displays cleaned labels (no underscores). This ensures legend *values* show nicely.
+legend_drop_values_bottom <- list(
+  Primary_Tumor = "0",
+  Lymph_Nodes = "0",
+  Distant_Metastases = "0"
+)
+
+per_ann_bottom <- lapply(names(meta_col_bottom), function(ann_name) {
+  v <- meta_col_bottom[[ann_name]]
+  params <- default_legend_params_bottom
+  if (is.function(v)) {
+    return(NULL)
+  }
+  legend_keys <- names(v)
+  legend_keys <- legend_keys[!is.na(legend_keys) & legend_keys != "NA"]
+  drop_values <- legend_drop_values_bottom[[ann_name]]
+  if (!is.null(drop_values)) {
+    legend_keys <- setdiff(legend_keys, drop_values)
+  }
+  params$at <- legend_keys
+  params$labels <- clean_labels(legend_keys)
+  params
+})
+names(per_ann_bottom) <- names(meta_col_bottom)
+annotation_legend_param_bottom <- per_ann_bottom[!sapply(per_ann_bottom, is.null)]
 
 bottom_ann <- HeatmapAnnotation(
   df = bottom_df,
   col = meta_col_bottom,
-  annotation_legend_param = list(
-    direction = "horizontal",
-    title_gp = gpar(fontsize = font_label_ann +
-                      1, fontface = "bold"),
-    labels_gp = gpar(fontsize = font_label_ann),
-    legend_width  = unit(2, "cm"),
-    word_wrap = TRUE
-  ),
-  annotation_name_gp = gpar(fontsize = font_label_ann +
-                              1, fontface = "bold"),
-  #annotation_label = gpar(fontsize = 8),
+  annotation_legend_param = annotation_legend_param_bottom,
+  annotation_name_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
   annotation_name_side = "right",
-  #height = unit(2, "mm"),
   annotation_height = unit(3.5, "in"),
-  # annotation_height = unit(0.1, "mm"),
   show_annotation_name = TRUE,
   show_legend = TRUE,
-  #gp = gpar(size = 15),
-  # gap = unit(1, "points"),
   na_col = "black",
   simple_anno_size_adjust = TRUE,
-  annotation_label = colnames(bottom_df)
+  annotation_label = clean_labels(colnames(bottom_df))
 )
 
 ##### Test Bottom Annotation #####
 #draw(bottom_ann)
 #dev.off()
 
-colnames(ptc_df_onco_ready) <- gsub("P_", "", colnames(ptc_df_onco_ready))
 ######### Start png media. Choose from pdf, png, svg, etc. #####
 file_name <- paste0(output_dir,
                     "oncoplot",
@@ -295,7 +357,8 @@ ptc_oncoprint <- oncoPrint(
       "SUB",
       "DEL",
       "Tumor",
-      "Normal"
+      "Normal",
+      "Lesion"
     ),
     # , "LB" These match the names of the mutations defined in alter_fun
     labels = c(
@@ -308,7 +371,8 @@ ptc_oncoprint <- oncoPrint(
       "Substitution",
       "Deletion",
       "Tumor",
-      "Normal"
+      "Normal",
+      "Lesion"
     ),
     # , "Likely Benign"
     title_gp = gpar(fontsize = font_label_ann +
@@ -316,16 +380,16 @@ ptc_oncoprint <- oncoPrint(
     labels_gp = gpar(fontsize = font_label_ann) # , "#C9A448"
   ),
   #alter_fun_is_vectorized = FALSE,
-  column_order = colnames(ptc_df_onco_ready),
+  column_order = rownames(ptc_meta_summary)[order(ptc_meta_summary$Subtypes)],
   column_split = factor(
     ptc_meta_summary$Subtypes,
     levels = c(
-      "FA",
-      "FTC",
-      "NIFTP",
+      "THY",
       "PTC",
       "PTCplusTHY",
-      "THY")
+      "FTC",
+      "NIFTP",
+      "FA")
   ),
   column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
   column_names_gp = gpar(fontsize = font_label_ann +
@@ -338,7 +402,8 @@ ptc_oncoprint <- oncoPrint(
       boxplot = anno_multiple_boxplot,
       width = unit(4, "cm"),
       show_annotation_name = FALSE
-    )
+    ),
+    gap = unit(2, "mm")
   ),
   bottom_annotation = bottom_ann,
   top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
@@ -347,7 +412,7 @@ ptc_oncoprint <- oncoPrint(
 ##### Create Oncoprint Legend for metadata ####
 lgd = Legend(
   labels = c("Tumor", "Normal"),
-  title = "Phenotype",
+  title = "Gene Expression\n(Boxplot, log2\nnormalized counts + 1)",
   legend_gp = gpar(fill = c("grey40", "grey90")),
   title_gp = gpar(fontsize = font_label_ann + 1, fontface = "bold"),
   labels_gp = gpar(fontsize = font_label_ann)
@@ -391,7 +456,8 @@ ptc_onco_obj_list <- list(
         "SUB",
         "DEL",
         "Tumor",
-        "Normal"
+        "Normal",
+        "Lesion"
       ),
       # , "LB" These match the names of the mutations defined in alter_fun
       labels = c(
@@ -404,7 +470,8 @@ ptc_onco_obj_list <- list(
         "Substitution",
         "Deletion",
         "Tumor",
-        "Normal"
+        "Normal",
+        "Lesion"
       ),
       # , "Likely Benign"
       title_gp = gpar(fontsize = font_label_ann +
@@ -412,16 +479,16 @@ ptc_onco_obj_list <- list(
       labels_gp = gpar(fontsize = font_label_ann) # , "#C9A448"
     ),
     alter_fun_is_vectorized = FALSE,
-    column_order = colnames(ptc_df_onco_ready),
+    column_order = rownames(ptc_meta_summary)[order(ptc_meta_summary$Subtypes)],
     column_split = factor(
       ptc_meta_summary$Subtypes,
       levels = c(
-        "FA",
-        "FTC",
-        "NIFTP",
+        "THY",
         "PTC",
         "PTCplusTHY",
-        "THY")
+        "FTC",
+        "NIFTP",
+        "FA")
     ),
     column_title_gp = gpar(fontsize = font_label_ann, fontface = "bold"),
     column_names_gp = gpar(fontsize = font_label_ann +
@@ -434,15 +501,15 @@ ptc_onco_obj_list <- list(
         boxplot = anno_multiple_boxplot,
         width = unit(4, "cm"),
         show_annotation_name = FALSE
-      )
+      ),
+      gap = unit(2, "mm")
     ),
     bottom_annotation = bottom_ann,
     top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
   ),
-  lgd = lgd
+  lgd = lgd,
+  version = format(Sys.time(), "%Y-%m-%d %H:%M:%S %Z")
 )
-
-
 
 ####### Save Oncoplot Object #######
 saveRDS(ptc_onco_obj_list,

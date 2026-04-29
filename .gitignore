@@ -22,3 +22,7 @@ out/10-07-2025
 out/10-08-2025
 out/*
 .Rproj.user
+Rplots.pdf
+src/prepare_variant_data_dev.R
+/archive
+.positai
