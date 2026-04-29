@@ -272,14 +272,30 @@ default_legend_params_bottom <- list(
 
 ## For each bottom annotation build a full legend param list that keeps mapping keys (`at`)
 ## but displays cleaned labels (no underscores). This ensures legend *values* show nicely.
-per_ann_bottom <- lapply(meta_col_bottom, function(v) {
+legend_drop_values_bottom <- list(
+  Primary_Tumor = "0",
+  Lymph_Nodes = "0",
+  Distant_Metastases = "0"
+)
+
+per_ann_bottom <- lapply(names(meta_col_bottom), function(ann_name) {
+  v <- meta_col_bottom[[ann_name]]
   params <- default_legend_params_bottom
-  params$at <- names(v)
-  params$labels <- clean_labels(names(v))
+  if (is.function(v)) {
+    return(NULL)
+  }
+  legend_keys <- names(v)
+  legend_keys <- legend_keys[!is.na(legend_keys) & legend_keys != "NA"]
+  drop_values <- legend_drop_values_bottom[[ann_name]]
+  if (!is.null(drop_values)) {
+    legend_keys <- setdiff(legend_keys, drop_values)
+  }
+  params$at <- legend_keys
+  params$labels <- clean_labels(legend_keys)
   params
 })
 names(per_ann_bottom) <- names(meta_col_bottom)
-annotation_legend_param_bottom <- per_ann_bottom
+annotation_legend_param_bottom <- per_ann_bottom[!sapply(per_ann_bottom, is.null)]
 
 bottom_ann <- HeatmapAnnotation(
   df = bottom_df,
