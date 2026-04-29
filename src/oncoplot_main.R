@@ -11,7 +11,7 @@ library(RColorBrewer)
 
 alter_fun_custom = list(
   background = function(x, y, w, h)
-    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#CCCCCC", col = NA)),
+    grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#D9D9D9", col = NA)),
   # red rectangles
   P = function(x, y, w, h)
     grid.rect(x, y, w * 0.9, h * 0.9, gp = gpar(fill = "#CD1076", col = NA)),
