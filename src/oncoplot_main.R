@@ -402,7 +402,8 @@ ptc_oncoprint <- oncoPrint(
       boxplot = anno_multiple_boxplot,
       width = unit(4, "cm"),
       show_annotation_name = FALSE
-    )
+    ),
+    gap = unit(2, "mm")
   ),
   bottom_annotation = bottom_ann,
   top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
@@ -500,7 +501,8 @@ ptc_onco_obj_list <- list(
         boxplot = anno_multiple_boxplot,
         width = unit(4, "cm"),
         show_annotation_name = FALSE
-      )
+      ),
+      gap = unit(2, "mm")
     ),
     bottom_annotation = bottom_ann,
     top_annotation = c(top_ann, HeatmapAnnotation(cbar = anno_oncoprint_barplot()))
