@@ -139,9 +139,8 @@ ptc_meta_summary <- ptc_meta_summary %>%
 
 ptc_meta_summary$Nodule1_FNA_Result[is.na(ptc_meta_summary$Nodule1_FNA_Result)] <- "NA"
 
-ptc_meta_summary$Nodule1_FNA_Result <- as.factor(
-  ptc_meta_summary$Nodule1_FNA_Result
-)
+ptc_meta_summary <- ptc_meta_summary %>%
+  mutate(across(where(is.character), as.factor))
 
 str(ptc_meta_summary)
 unique(ptc_meta_summary$Nodule1_FNA_Result)
